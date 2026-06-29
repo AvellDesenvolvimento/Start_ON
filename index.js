@@ -28,6 +28,8 @@ router.post('/login', async (req, res) => {
     });
 
   } catch (error) {
+    // Adicionado log para facilitar o debug caso a autenticação falhe
+    console.error("Erro na autenticação:", error);
     // Retorna erro 401 caso o token não seja validado ou esteja expirado
     res.status(401).send({ error: 'Token inválido ou expirado' });
   }
