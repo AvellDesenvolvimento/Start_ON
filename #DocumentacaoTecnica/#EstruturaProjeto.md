@@ -30,6 +30,17 @@ Obs:
 https://dashboard.render.com/
 Acessar com avellmbile@gmail.com e com a senha desta conta pelo gmail.
 
+https://start-on.onrender.com/
+
 Create New Service / Web Service
 escolher o Serviço para linkar!
 tem que estar sincronizado com o git hub da conta que vou linkar.
+
+# 8. Sempre atualizar para o github
+git add .
+
+git status
+
+git commit -m "Update projeto"
+
+git push oringin main
