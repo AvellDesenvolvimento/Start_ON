@@ -1,61 +1,42 @@
 const express = require('express');
-// Roteador para gerenciar as rotas da API
-const router = express.Router();
-// Importa a configuração do Firebase Admin
-const admin = require('./config/firebase');
-// Habilita o CORS para permitir requisições do frontend
 const cors = require('cors');
-// Carrega variáveis de ambiente do arquivo .env
+const auth = require('./config/firebase');
 require('dotenv').config();
 
-// Define a rota POST para processar o login enviado pelo frontend
-router.post('/login', async (req, res) => {
-  const { idToken } = req.body; // Extrai o token de autenticação do corpo da requisição
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+app.post('/login', async (req, res) => {
+  const { idToken } = req.body;
+
+  if (!idToken) {
+    return res.status(400).json({ error: 'Token ausente' });
+  }
 
   try {
-    // Valida o token recebido diretamente no Firebase Admin
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
-    const uid = decodedToken.uid; // ID único do usuário gerado pelo Firebase
-    const email = decodedToken.email; // E-mail retornado pelo Google
+    const decodedToken = await auth.verifyIdToken(idToken);
+    const { uid, email } = decodedToken;
 
-    // Define o status de administrador se o e-mail corresponder ao configurado
-    const isAdmin = (email === 'avellmobile@gmail.com');
+    const allowedAdmins = ['avellmobile@gmail.com', 'seu-outro-email@gmail.com'];
+    const isAdmin = allowedAdmins.includes(email);
 
-    // Retorna os dados do usuário para o frontend caso a validação ocorra
     res.status(200).json({
       status: 'success',
       user: { uid, email, isAdmin }
     });
-
   } catch (error) {
-    // Adicionado log para facilitar o debug caso a autenticação falhe
-    console.error("Erro na autenticação:", error);
-    // Retorna erro 401 caso o token não seja validado ou esteja expirado
-    res.status(401).send({ error: 'Token inválido ou expirado' });
+    console.error("Erro na autenticação:", error.message);
+    res.status(401).json({ error: 'Token inválido ou expirado', details: error.message });
   }
 });
 
-// Inicializa a instância do framework Express
-const app = express();
-// Define a porta do servidor a partir do .env ou padrão 3000
-const PORT = process.env.PORT || 3000;
-
-// Aplica o middleware de CORS para permitir requisições de outras origens
-app.use(cors());
-// Permite que o servidor processe dados no formato JSON
-app.use(express.json());
-
-// Vincula o roteador ao app para que as rotas definidas sejam acessíveis
-app.use(router);
-
-// Rota de teste para verificar se o servidor está ativo
 app.get('/', (req, res) => {
-    res.json({ status: "OK", message: "Amaury - On Line!" });
+  res.json({ status: "OK", message: "Amaury - On Line!" });
 });
 
-// Inicia o servidor e aguarda conexões na porta definida
 app.listen(PORT, () => {
-    console.log(`Sistema Start_On rodando na porta ${PORT}`);
+  console.log(`Sistema Start_On rodando na porta ${PORT}`);
 });
-
-module.exports = router;
