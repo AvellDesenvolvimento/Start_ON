@@ -43,4 +43,4 @@ git status
 
 git commit -m "Update projeto"
 
-git push oringin main
+git push origin main
