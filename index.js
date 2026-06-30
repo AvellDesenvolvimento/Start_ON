@@ -48,3 +48,10 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Sistema Start_On rodando na porta ${PORT}`);
 });
+
+// NÃO REMOVER ISTO!
+// 4. NECESSÁRIO PARA O RENDER REDIRECINAR PARA painel(vou mudar este nome de var)
+app.use(express.static(path.join(__dirname, 'dist')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
