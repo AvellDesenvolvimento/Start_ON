@@ -38,9 +38,11 @@ tem que estar sincronizado com o git hub da conta que vou linkar.
 
 # 8. Sempre atualizar para o github
 git add .
-
 git status
-
 git commit -m "Update projeto"
+git push origin main
 
+# Resumo para enviar para o git
+git add .
+git commit -m "Correção de rota catch-all para Express v5"
 git push origin main
