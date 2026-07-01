@@ -21,7 +21,7 @@ app.post('/login', async (req, res) => {
   try {
     const decodedToken = await auth.verifyIdToken(idToken);
     const { uid, email } = decodedToken;
-    const allowedAdmins = ['avellmobile@gmail.com', 'seu-outro-email@gmail.com'];
+    const allowedAdmins = ['avellmobile@gmail.com', 'amaury.hs@gmail.com'];
     const isAdmin = allowedAdmins.includes(email);
     res.status(200).json({ status: 'success', user: { uid, email, isAdmin } });
   } catch (error) {
@@ -35,8 +35,8 @@ app.get('/api', (req, res) => {
 });
 
 // 3. FALLBACK ÚNICO PARA O REACT (Redirecionamento para /painel)
-// Pega qualquer rota que não seja as de cima e devolve o index.html
-app.get(/.*/, (req, res) => {
+// Pega qualquer rota GET que não seja as de cima e devolve o index.html
+app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
