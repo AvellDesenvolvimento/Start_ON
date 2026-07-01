@@ -5,7 +5,7 @@ const auth = require('./config/firebase');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 app.use(cors());
 app.use(express.json());
@@ -13,7 +13,7 @@ app.use(express.json());
 // 1. Serve os arquivos estáticos da pasta 'dist'
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// 2. Rotas de API (Essas funcionam normalmente)
+// 2. Rotas de API
 app.post('/login', async (req, res) => {
   const { idToken } = req.body;
   if (!idToken) return res.status(400).json({ error: 'Token ausente' });
@@ -34,25 +34,13 @@ app.get('/api', (req, res) => {
   res.json({ status: "OK", message: "Amaury - On Line!" });
 });
 
-// 3. FALLBACK PARA O REACT (Sem usar rota com asterisco)
-// Esse middleware pega tudo que não foi resolvido pelas rotas acima
-app.use((req, res, next) => {
-  // Se a requisição não for para /login ou /api, entrega o index.html
-  if (req.path !== '/login' && req.path !== '/api') {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-  } else {
-    next();
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Sistema Start_On rodando na porta ${PORT}`);
-});
-
-// NÃO REMOVER ISTO!
-// 4. NECESSÁRIO PARA O RENDER REDIRECIONAR PARA A ROTA DO REACT (ex: /painel)
-app.use(express.static(path.join(__dirname, 'dist')));
-
+// 3. FALLBACK ÚNICO PARA O REACT (Redirecionamento para /painel)
+// Pega qualquer rota que não seja as de cima e devolve o index.html
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+// 4. LIGAR O SERVIDOR (OBRIGATORIAMENTE A ÚLTIMA LINHA)
+app.listen(PORT, () => {
+  console.log(`Sistema Start_On rodando na porta ${PORT}`);
 });
