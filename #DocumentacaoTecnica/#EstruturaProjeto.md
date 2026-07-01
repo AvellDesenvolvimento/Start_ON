@@ -44,5 +44,5 @@ git push origin main
 
 # Resumo para enviar para o git
 git add .
-git commit -m "Correção de rota catch-all para Express v5"
+git commit -m "Update"
 git push origin main
