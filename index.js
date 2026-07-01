@@ -35,7 +35,6 @@ app.get('/api', (req, res) => {
 });
 
 // 3. FALLBACK ÚNICO PARA O REACT (Redirecionamento para /painel)
-// Pega qualquer rota GET que não seja as de cima e devolve o index.html
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
