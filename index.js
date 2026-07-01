@@ -50,8 +50,9 @@ app.listen(PORT, () => {
 });
 
 // NÃO REMOVER ISTO!
-// 4. NECESSÁRIO PARA O RENDER REDIRECINAR PARA painel(vou mudar este nome de var)
+// 4. NECESSÁRIO PARA O RENDER REDIRECIONAR PARA A ROTA DO REACT (ex: /painel)
 app.use(express.static(path.join(__dirname, 'dist')));
+
 app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
