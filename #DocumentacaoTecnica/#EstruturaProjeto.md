@@ -37,12 +37,16 @@ escolher o Serviço para linkar!
 tem que estar sincronizado com o git hub da conta que vou linkar.
 
 # 8. Sempre atualizar para o github
+npm run build
+
 git add .
 git status
 git commit -m "Update projeto"
 git push origin main
 
 # Resumo para enviar para o git
+npm run build
+
 git add .
 git commit -m "Update"
 git push origin main

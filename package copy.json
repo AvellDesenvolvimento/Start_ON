@@ -3,14 +3,11 @@
   "version": "1.0.0",
   "description": "Projetos Amaury",
   "main": "index.js",
-  "engines": {
-    "node": ">=20.0.0"
-  },
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
-    "build": "vite build --debug",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "keywords": [],
