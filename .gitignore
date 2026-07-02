@@ -1,4 +1,6 @@
 node_modules
-config/serviceAccountKey.json
 .env
 serviceAccountKey.json
+*.bkp
+*.tmp
+.DS_Store
