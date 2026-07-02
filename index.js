@@ -7,10 +7,12 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
+// Configurações Globais
 app.use(cors());
 app.use(express.json());
 
 // 1. Serve os arquivos estáticos da pasta 'dist'
+// Certifique-se que o build está gerando essa pasta na raiz do projeto
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // 2. Rotas de API
@@ -34,12 +36,22 @@ app.get('/api', (req, res) => {
   res.json({ status: "OK", message: "Amaury - On Line!" });
 });
 
-// 3. FALLBACK ÚNICO PARA O REACT (Redirecionamento para /painel)
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+// 3. FALLBACK ÚNICO PARA O REACT
+// Usando regex para evitar o PathError do path-to-regexp
+app.get(/.*/, (req, res) => {
+  // Debug: Se o Render mostrar isso no log, sabemos que a rota caiu aqui
+  console.log(`Fallback acionado para: ${req.url}`);
+  
+  const indexPath = path.join(__dirname, 'dist', 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) {
+      console.error("Erro ao enviar index.html:", err);
+      res.status(500).send(err);
+    }
+  });
 });
 
-// 4. LIGAR O SERVIDOR (OBRIGATORIAMENTE A ÚLTIMA LINHA)
+// 4. LIGAR O SERVIDOR
 app.listen(PORT, () => {
   console.log(`Sistema Start_On rodando na porta ${PORT}`);
 });
